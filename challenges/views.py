@@ -21,6 +21,17 @@ monthly_challenges = {
     "december": "Work in fields for an hour daily!"
 }
 
+def index(request):
+    all_months = list(monthly_challenges.keys())
+    html_month_list = ""
+    for month in all_months:
+        redirect_url = reverse("challenge-by-month-name", args=(month, ))
+        capitalized_month = month.capitalize()
+        html_month_list += f"<li> <a href = \"{redirect_url}\">{capitalized_month}</a> </li>"
+
+    html_response = f"<ul> {html_month_list} </ul>"
+    return HttpResponse(html_response)
+
 def monthly_challenge_by_number(request, month):
     all_months = list(monthly_challenges.keys())
     if month < 0 or month > len(all_months):
