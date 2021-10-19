@@ -18,19 +18,14 @@ monthly_challenges = {
     "september": "Do AWS certification!",
     "october": "Take 2 vacations!",
     "november": "Plant 100 trees.",
-    "december": "Work in fields for an hour daily!"
+    "december": None
 }
 
 def index(request):
     all_months = list(monthly_challenges.keys())
-    html_month_list = ""
-    for month in all_months:
-        redirect_url = reverse("challenge-by-month-name", args=(month, ))
-        capitalized_month = month.capitalize()
-        html_month_list += f"<li> <a href = \"{redirect_url}\">{capitalized_month}</a> </li>"
-
-    html_response = f"<ul> {html_month_list} </ul>"
-    return HttpResponse(html_response)
+    return render(request, "challenges/index.html", context={
+        "months": all_months
+    })
 
 def monthly_challenge_by_number(request, month):
     all_months = list(monthly_challenges.keys())
@@ -44,6 +39,8 @@ def monthly_challenge_by_number(request, month):
 
 
 def monthly_challenge(request, month):
-    
     current_challenege = monthly_challenges.get(month.lower(), "Month not supported!")
-    return HttpResponse(current_challenege)
+    return render(request, "challenges/challenge.html", context={
+        "month": month,
+        "challenge_text": current_challenege
+    })
